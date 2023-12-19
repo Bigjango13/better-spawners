@@ -25,15 +25,23 @@ public abstract class BlockMobSpawnerMixin {
 
     @Inject(method = "getBreakResult", at = @At(value = "HEAD"), cancellable = true)
     public void getBreakResult(World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity, CallbackInfoReturnable<ItemStack[]> cir) {
-        if (dropCause != EnumDropCause.PICK_BLOCK) return;
-        ItemStack stack = new ItemStack(Block.mobspawner);
+        if (dropCause == EnumDropCause.SILK_TOUCH) {
+            cir.setReturnValue(new ItemStack[]{new ItemStack(Block.mobspawnerDeactivated)});
+            return;
+        } else if (dropCause == EnumDropCause.PICK_BLOCK) {
+            if (dropCause != EnumDropCause.PICK_BLOCK) return;
+            ItemStack stack = new ItemStack(Block.mobspawner);
 
-        if (tileEntity != null) {
-            CompoundTag compound = new CompoundTag();
-            tileEntity.writeToNBT(compound);
-            stack.getData().putCompound("SpawnerData", compound);
+            if (tileEntity != null) {
+                CompoundTag compound = new CompoundTag();
+                tileEntity.writeToNBT(compound);
+                stack.getData().putCompound("SpawnerData", compound);
+            }
+            cir.setReturnValue(new ItemStack[]{stack});
+            return;
         }
-        cir.setReturnValue(new ItemStack[]{stack});
+        cir.setReturnValue(null);
+        return;
     }
 
     @Inject(method = "onBlockPlaced", at = @At("TAIL"))
