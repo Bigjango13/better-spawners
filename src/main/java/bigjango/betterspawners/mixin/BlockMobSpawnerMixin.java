@@ -45,13 +45,19 @@ public abstract class BlockMobSpawnerMixin {
 
     @Inject(method = "onBlockPlaced", at = @At("TAIL"))
     public void onBlockPlaced(World world, int x, int y, int z, Side side, EntityLiving entity, double sideHeight, CallbackInfo ci) {
-        EntityPlayer player = (EntityPlayer)entity;
-        CompoundTag spawnerData = player.getHeldItem().getData().getCompoundOrDefault("SpawnerData", null);
-        TileEntityMobSpawner tileEntity = (TileEntityMobSpawner)world.getBlockTileEntity(x, y, z);
-        if (tileEntity == null) tileEntity = (TileEntityMobSpawner)getNewBlockEntity();
+        // Spawn tile entity
+        TileEntityMobSpawner tileEntity = (TileEntityMobSpawner) world.getBlockTileEntity(x, y, z);
+        if (tileEntity == null) tileEntity = (TileEntityMobSpawner) this.getNewBlockEntity();
+
+        // Get NBT (if any)
+        EntityPlayer player = (EntityPlayer) entity;
+        ItemStack held = player.getHeldItem();
+        if (held == null) return;
+        CompoundTag spawnerData = held.getData().getCompoundOrDefault("SpawnerData", null);
         if (spawnerData == null) return;
 
-        tileEntity.setMobId(spawnerData.getString("EntityId"));
+        // Set spawner data
+        tileEntity.setMobId(spawnerData.getStringOrDefault("EntityId", "none"));
         tileEntity.delay = spawnerData.getShort("Delay");
     }
 }
