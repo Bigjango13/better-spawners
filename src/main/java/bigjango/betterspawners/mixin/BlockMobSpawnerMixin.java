@@ -29,7 +29,6 @@ public abstract class BlockMobSpawnerMixin {
             cir.setReturnValue(new ItemStack[]{new ItemStack(Block.mobspawnerDeactivated)});
             return;
         } else if (dropCause == EnumDropCause.PICK_BLOCK) {
-            if (dropCause != EnumDropCause.PICK_BLOCK) return;
             ItemStack stack = new ItemStack(Block.mobspawner);
 
             if (tileEntity != null) {
