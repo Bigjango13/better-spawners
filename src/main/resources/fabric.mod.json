@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+
+  "name": "Better Spawners",
+  "id": "betterspawners",
+  "version": "1.0.0",
+
+  "mixins": [
+      "betterspawners.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.13.3"
+  }
+}
