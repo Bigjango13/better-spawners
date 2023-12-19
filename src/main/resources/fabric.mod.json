@@ -1,9 +1,20 @@
 {
   "schemaVersion": 1,
-
-  "name": "Better Spawners",
   "id": "betterspawners",
   "version": "1.0.0",
+
+  "name": "Better Spawners",
+  "description": "This mod allows you to pick block spawners and copy their data",
+  "authors": [
+    "BigJango",
+    "Apollointhehouse"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": "https://github.com/Bigjango13/better-spawners"
+  },
+
+  "license": "CC0-1.0",
 
   "mixins": [
       "betterspawners.mixins.json"

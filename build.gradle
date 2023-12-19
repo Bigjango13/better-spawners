@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "bigjango"
-archivesBaseName = "betterportals"
+archivesBaseName = "BetterSpawners"
 version = "1.0.0"
 
 loom {
