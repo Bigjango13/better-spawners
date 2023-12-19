@@ -4,7 +4,8 @@
     "package": "bigjango.betterspawners.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "BlockMobSpawnerMixin"
+        "BlockMobSpawnerMixin",
+        "TileEntityMobSpawnerMixin"
     ],
     "client": [
     ],

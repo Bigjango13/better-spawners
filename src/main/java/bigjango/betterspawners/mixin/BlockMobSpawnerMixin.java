@@ -1,5 +1,7 @@
 package bigjango.betterspawners.mixin;
 
+import bigjango.betterspawners.ISpawner;
+
 import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.util.helper.Side;
@@ -35,6 +37,7 @@ public abstract class BlockMobSpawnerMixin {
                 CompoundTag compound = new CompoundTag();
                 tileEntity.writeToNBT(compound);
                 stack.getData().putCompound("SpawnerData", compound);
+                stack.setCustomName(compound.getString("Name"));
             }
             cir.setReturnValue(new ItemStack[]{stack});
             return;
@@ -56,7 +59,9 @@ public abstract class BlockMobSpawnerMixin {
         CompoundTag spawnerData = held.getData().getCompoundOrDefault("SpawnerData", null);
         if (spawnerData == null) return;
 
-        // Set spawner data
+        // Set spawner data (ISpawner only needed because the fields aren't builtin)
+        ((ISpawner) tileEntity).setEntityData(spawnerData.getCompoundOrDefault("EntityData", null));
+        ((ISpawner) tileEntity).setEntityName(held.getCustomName());
         tileEntity.setMobId(spawnerData.getStringOrDefault("EntityId", "none"));
         tileEntity.delay = spawnerData.getShort("Delay");
     }
