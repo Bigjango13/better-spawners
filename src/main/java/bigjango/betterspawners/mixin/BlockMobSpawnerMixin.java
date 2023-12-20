@@ -27,23 +27,29 @@ public abstract class BlockMobSpawnerMixin {
 
     @Inject(method = "getBreakResult", at = @At(value = "HEAD"), cancellable = true)
     public void getBreakResult(World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity, CallbackInfoReturnable<ItemStack[]> cir) {
-        if (dropCause == EnumDropCause.SILK_TOUCH) {
-            cir.setReturnValue(new ItemStack[]{new ItemStack(Block.mobspawnerDeactivated)});
-            return;
-        } else if (dropCause == EnumDropCause.PICK_BLOCK) {
-            ItemStack stack = new ItemStack(Block.mobspawner);
+        switch (dropCause) {
+            case SILK_TOUCH:
+                // return new ItemStack[]{new ItemStack(Block.mobspawnerDeactivated)};
+                cir.setReturnValue(new ItemStack[]{new ItemStack(Block.mobspawnerDeactivated)});
+                break;
+            case PICK_BLOCK:
+                ItemStack stack = new ItemStack(Block.mobspawner);
 
-            if (tileEntity != null) {
-                CompoundTag compound = new CompoundTag();
-                tileEntity.writeToNBT(compound);
-                stack.getData().putCompound("SpawnerData", compound);
-                stack.setCustomName(compound.getString("Name"));
-            }
-            cir.setReturnValue(new ItemStack[]{stack});
-            return;
+                if (tileEntity != null) {
+                    CompoundTag compound = new CompoundTag();
+                    tileEntity.writeToNBT(compound);
+                    stack.getData().putCompound("SpawnerData", compound);
+                    stack.setCustomName(compound.getString("Name"));
+                }
+                // return new ItemStack[]{stack};
+                cir.setReturnValue(new ItemStack[]{stack});
+                break;
+            default:
+                System.out.println("Test");
+                // return null;
+                cir.setReturnValue(null);
+                break;
         }
-        cir.setReturnValue(null);
-        return;
     }
 
     @Inject(method = "onBlockPlaced", at = @At("TAIL"))
